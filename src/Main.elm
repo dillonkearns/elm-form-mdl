@@ -1,6 +1,5 @@
 module Main exposing (main)
 
-import Tennis
 import Html exposing (..)
 
 
@@ -9,18 +8,21 @@ type Msg
 
 
 type alias Model =
-    Tennis.Game
+    { name : String
+    }
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ text (Tennis.score model) ]
+        [ text "hello" ]
 
 
 init : ( Model, Cmd Msg )
 init =
-    Tennis.init ! []
+    { name = ""
+    }
+        ! []
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
