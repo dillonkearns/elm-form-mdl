@@ -43,6 +43,7 @@ textThingy { mdl } =
         [ 0 ]
         mdl
         [ Material.Options.css "width" "16rem"
+        , Material.Textfield.label "Enter email"
         , Material.Textfield.floatingLabel
 
         -- , Material.Options.onInput NameChanged
