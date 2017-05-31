@@ -1,7 +1,6 @@
 module Main exposing (main)
 
 import Form exposing (FieldState, Form)
-import Form.Field
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)

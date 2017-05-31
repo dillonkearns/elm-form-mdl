@@ -1,10 +1,11 @@
 module Form.Material exposing (textfield)
 
+-- import Form.Error exposing (ErrorValue)
+-- import Html
+-- import Material
+
 import Form exposing (FieldState, Form)
-import Form.Error exposing (ErrorValue)
 import Form.Field
-import Html
-import Material
 import Material.Options as Options
 import Material.Textfield exposing (error)
 
