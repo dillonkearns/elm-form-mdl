@@ -75,7 +75,6 @@ formView model =
 submitButtonView mdl =
     Form.Material.submitButton FormMsg
         MdlMsg
-        [ 0 ]
         mdl
         [ Button.ripple
         , Button.colored

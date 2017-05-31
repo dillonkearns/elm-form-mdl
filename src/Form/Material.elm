@@ -12,25 +12,29 @@ import Material.Options as Options
 import Material.Textfield exposing (error)
 
 
-submitButton formMsg mdlMsg ids mdlModel options children =
-    Button.render mdlMsg ids mdlModel ([ Options.onClick (formMsg Form.Submit), Button.type_ "submit" ] ++ options) children
+submitButton formMsg mdlMsg mdlModel options children =
+    Button.render mdlMsg
+        [ Hash.hash "submit" ]
+        mdlModel
+        ([ Options.onClick (formMsg Form.Submit), Button.type_ "submit" ] ++ options)
+        children
 
 
 
 -- -> List (Options.Property (Material.Textfield.Config msg) msg)
 -- textfield :
---     List Int
---     -> Material.Model
+--     (Form.Msg -> msg)
 --     -> (Material.Msg msg -> msg)
---     -> (Form.Msg -> msg)
+--     -> Material.Model
 --     -> FieldState e String
+--     -- -> List (Options.Property (Material.Textfield.Config msg) msg)
 --     -> List (Options.Property a msg)
 --     -> Html.Html msg
 
 
 textfield formMsg mdlMsg mdlModel field options =
     let
-        something =
+        validationOptions =
             [ Material.Textfield.value (Maybe.withDefault "" field.value)
             , onMaterialInput formMsg field.path
             , onMaterialFocus formMsg field.path
@@ -42,7 +46,7 @@ textfield formMsg mdlMsg mdlModel field options =
     Material.Textfield.render mdlMsg
         [ Hash.hash field.path ]
         mdlModel
-        (options ++ something)
+        (options ++ validationOptions)
         []
 
 
@@ -50,6 +54,7 @@ textfield formMsg mdlMsg mdlModel field options =
 -- errorMessage : Maybe (ErrorValue String) -> String
 
 
+errorMessage : Maybe a -> String
 errorMessage maybeError =
     case maybeError of
         Just error ->
