@@ -7,9 +7,7 @@ import Form.Validate exposing (Validation)
 import Html exposing (..)
 import Html.Attributes
 import Material
-import Material.Options
 import Material.Scheme
-import Material.Textfield
 
 
 type Msg
@@ -31,10 +29,19 @@ type alias Model =
 
 view : Model -> Html Msg
 view model =
+    let
+        nameField =
+            Form.getFieldAsString "name" model.form
+    in
     div []
         [ h1 [] [ text "hello" ]
-        , Html.map FormMsg (formView model.form)
-        , Form.Material.textThingy model MdlMsg
+
+        -- , Html.map FormMsg (formView model.form)
+        , Form.Material.textThingy model
+            MdlMsg
+            FormMsg
+            nameField
+        , errorFor nameField
         ]
 
 
