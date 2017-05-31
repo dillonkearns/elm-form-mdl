@@ -4,8 +4,6 @@ import Form exposing (FieldState, Form)
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
-import Html.Attributes exposing (class)
-import Html.Events exposing (onClick)
 import Material
 import Material.Button as Button
 import Material.Options as Options
@@ -39,26 +37,36 @@ view model =
     in
     div []
         [ h1 [] [ text "hello" ]
-        , Form.Material.textfield [ 0 ]
+        , textfield
+            [ 0 ]
             model.mdl
-            MdlMsg
-            FormMsg
             nameField
             [ Options.css "width" "16rem"
             , Material.Textfield.label "Enter email"
             , Material.Textfield.floatingLabel
             ]
-        , Form.Material.submitButton FormMsg
-            MdlMsg
-            [ 0 ]
-            model.mdl
-            [ Button.ripple, Button.colored, Button.raised ]
-            [ text "Submit" ]
-        , submittedUser model
+        , submitButtonView model.mdl
+        , submittedUserView model
         ]
 
 
-submittedUser model =
+submitButtonView mdl =
+    Form.Material.submitButton FormMsg
+        MdlMsg
+        [ 0 ]
+        mdl
+        [ Button.ripple
+        , Button.colored
+        , Button.raised
+        ]
+        [ text "Submit" ]
+
+
+textfield =
+    Form.Material.textfield FormMsg MdlMsg
+
+
+submittedUserView model =
     div [] [ text (toString model.submittedUser) ]
 
 
