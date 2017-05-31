@@ -2,11 +2,8 @@ module Form.Material exposing (textThingy)
 
 import Form exposing (Form)
 import Form.Field
-import Form.Input as Input
-import Form.Validate exposing (Validation)
-import Material
 import Material.Options as Options
-import Material.Textfield
+import Material.Textfield exposing (error)
 
 
 -- textThingy :  -> Html Msg
@@ -19,14 +16,24 @@ textThingy { mdl } mdlMsg formMsg field =
         [ Options.css "width" "16rem"
         , Material.Textfield.label "Enter email"
         , Material.Textfield.floatingLabel
-
-        -- , Options.onInput NameChanged
         , Material.Textfield.value (Maybe.withDefault "" field.value)
         , onMaterialInput formMsg field.path
         , onMaterialFocus formMsg field.path
         , onMaterialBlur formMsg field.path
+        , Material.Textfield.error (errorMessage field.liveError)
+            |> Options.when (field.liveError /= Nothing)
         ]
         []
+
+
+errorMessage : Maybe a -> String
+errorMessage maybeError =
+    case maybeError of
+        Just error ->
+            toString error
+
+        Nothing ->
+            ""
 
 
 onMaterialInput : (Form.Msg -> msg) -> String -> Options.Property c msg

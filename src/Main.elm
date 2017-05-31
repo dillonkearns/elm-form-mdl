@@ -41,30 +41,6 @@ view model =
             MdlMsg
             FormMsg
             nameField
-        , errorFor nameField
-        ]
-
-
-errorFor : { b | liveError : Maybe a } -> Html msg
-errorFor field =
-    case field.liveError of
-        Just error ->
-            -- replace toString with your own translations
-            div [ Html.Attributes.style [ ( "color", "red" ) ] ] [ text (toString error) ]
-
-        Nothing ->
-            text ""
-
-
-formView : Form () UserForm -> Html Form.Msg
-formView form =
-    let
-        nameField =
-            Form.getFieldAsString "name" form
-    in
-    Html.form []
-        [ Input.textInput nameField []
-        , errorFor nameField
         ]
 
 
