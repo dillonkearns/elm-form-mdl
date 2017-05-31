@@ -7,11 +7,20 @@ module Form.Material exposing (submitButton, textfield)
 import Form exposing (FieldState, Form)
 import Form.Field
 import Hash
+import Html
+import Material
 import Material.Button as Button
 import Material.Options as Options
 import Material.Textfield exposing (error)
 
 
+submitButton :
+    (Form.Msg -> msg)
+    -> (Material.Msg msg -> msg)
+    -> Material.Model
+    -> List (Button.Property msg)
+    -> List (Html.Html msg)
+    -> Html.Html msg
 submitButton formMsg mdlMsg mdlModel options children =
     Button.render mdlMsg
         [ Hash.hash "submit" ]
