@@ -1,6 +1,7 @@
 module Form.Material exposing (textThingy)
 
 import Form exposing (FieldState, Form)
+import Form.Error exposing (ErrorValue)
 import Form.Field
 import Html
 import Material
@@ -8,30 +9,39 @@ import Material.Options as Options
 import Material.Textfield exposing (error)
 
 
-textThingy :
-    Material.Model
-    -> (Material.Msg msg -> msg)
-    -> (Form.Msg -> msg)
-    -> FieldState e String
-    -> Html.Html msg
-textThingy mdl mdlMsg formMsg field =
+-- -> List (Options.Property (Material.Textfield.Config msg) msg)
+-- textThingy :
+--     List Int
+--     -> Material.Model
+--     -> (Material.Msg msg -> msg)
+--     -> (Form.Msg -> msg)
+--     -> FieldState e String
+--     -> List (Options.Property a msg)
+--     -> Html.Html msg
+
+
+textThingy ids mdl mdlMsg formMsg field options =
+    let
+        something =
+            [ Material.Textfield.value (Maybe.withDefault "" field.value)
+            , onMaterialInput formMsg field.path
+            , onMaterialFocus formMsg field.path
+            , onMaterialBlur formMsg field.path
+            , Material.Textfield.error (errorMessage field.liveError)
+                |> Options.when (field.liveError /= Nothing)
+            ]
+    in
     Material.Textfield.render mdlMsg
-        [ 0 ]
+        ids
         mdl
-        [ Options.css "width" "16rem"
-        , Material.Textfield.label "Enter email"
-        , Material.Textfield.floatingLabel
-        , Material.Textfield.value (Maybe.withDefault "" field.value)
-        , onMaterialInput formMsg field.path
-        , onMaterialFocus formMsg field.path
-        , onMaterialBlur formMsg field.path
-        , Material.Textfield.error (errorMessage field.liveError)
-            |> Options.when (field.liveError /= Nothing)
-        ]
+        (options ++ something)
         []
 
 
-errorMessage : Maybe a -> String
+
+-- errorMessage : Maybe (ErrorValue String) -> String
+
+
 errorMessage maybeError =
     case maybeError of
         Just error ->

@@ -1,11 +1,14 @@
 module Main exposing (main)
 
-import Form exposing (Form)
+import Form exposing (FieldState, Form)
+import Form.Field
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
 import Material
+import Material.Options as Options
 import Material.Scheme
+import Material.Textfield exposing (error)
 
 
 type Msg
@@ -33,10 +36,15 @@ view model =
     in
     div []
         [ h1 [] [ text "hello" ]
-        , Form.Material.textThingy model.mdl
+        , Form.Material.textThingy [ 0 ]
+            model.mdl
             MdlMsg
             FormMsg
             nameField
+            [ Options.css "width" "16rem"
+            , Material.Textfield.label "Enter email"
+            , Material.Textfield.floatingLabel
+            ]
         ]
 
 
