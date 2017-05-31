@@ -27,7 +27,7 @@ submitButton formMsg mdlMsg ids mdlModel options children =
 --     -> Html.Html msg
 
 
-textfield formMsg mdlMsg ids mdl field options =
+textfield formMsg mdlMsg ids mdlModel field options =
     let
         something =
             [ Material.Textfield.value (Maybe.withDefault "" field.value)
@@ -40,7 +40,7 @@ textfield formMsg mdlMsg ids mdl field options =
     in
     Material.Textfield.render mdlMsg
         ids
-        mdl
+        mdlModel
         (options ++ something)
         []
 
