@@ -6,6 +6,7 @@ import Form.Validate exposing (Validation)
 import Html exposing (..)
 import Material
 import Material.Button as Button
+import Material.Color
 import Material.Options as Options
 import Material.Scheme
 import Material.Textfield exposing (error)
@@ -119,5 +120,5 @@ main =
         { init = init
         , update = update
         , subscriptions = \_ -> Sub.none
-        , view = view >> Material.Scheme.top
+        , view = view >> Material.Scheme.topWithScheme Material.Color.Teal Material.Color.Red
         }
