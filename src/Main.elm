@@ -50,7 +50,14 @@ init =
 
 userFormValidation : Validation () UserForm
 userFormValidation =
-    Form.Validate.map UserForm (Form.Validate.field "name" Form.Validate.email)
+    Form.Validate.map UserForm
+        (Form.Validate.field "name"
+            (Form.Validate.oneOf
+                [ Form.Validate.emptyString
+                , Form.Validate.email
+                ]
+            )
+        )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
