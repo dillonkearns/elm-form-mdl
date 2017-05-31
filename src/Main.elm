@@ -5,14 +5,16 @@ import Form.Input as Input
 import Form.Validate exposing (Validation)
 import Html exposing (..)
 import Html.Attributes
-
-
--- import Html.Attributes
+import Material
+import Material.Options
+import Material.Scheme
+import Material.Textfield
 
 
 type Msg
     = NoOp
     | FormMsg Form.Msg
+    | MdlMsg (Material.Msg Msg)
 
 
 type alias UserForm =
@@ -22,6 +24,7 @@ type alias UserForm =
 
 type alias Model =
     { form : Form () UserForm
+    , mdl : Material.Model
     }
 
 
@@ -30,9 +33,24 @@ view model =
     div []
         [ h1 [] [ text "hello" ]
         , Html.map FormMsg (formView model.form)
+        , textThingy model
         ]
 
 
+textThingy : Model -> Html Msg
+textThingy { mdl } =
+    Material.Textfield.render MdlMsg
+        [ 0 ]
+        mdl
+        [ Material.Options.css "width" "16rem"
+        , Material.Textfield.floatingLabel
+
+        -- , Material.Options.onInput NameChanged
+        ]
+        []
+
+
+errorFor : { b | liveError : Maybe a } -> Html msg
 errorFor field =
     case field.liveError of
         Just error ->
@@ -57,7 +75,9 @@ formView form =
 
 init : ( Model, Cmd Msg )
 init =
-    { form = Form.initial [] userFormValidation }
+    { form = Form.initial [] userFormValidation
+    , mdl = Material.model
+    }
         ! []
 
 
@@ -75,6 +95,9 @@ update msg model =
         FormMsg formMsg ->
             ( { model | form = Form.update userFormValidation formMsg model.form }, Cmd.none )
 
+        MdlMsg message_ ->
+            Material.update MdlMsg message_ model
+
 
 main : Program Never Model Msg
 main =
@@ -82,5 +105,5 @@ main =
         { init = init
         , update = update
         , subscriptions = \_ -> Sub.none
-        , view = view
+        , view = view >> Material.Scheme.top
         }
