@@ -1,11 +1,9 @@
 module Main exposing (main)
 
 import Form exposing (Form)
-import Form.Input as Input
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
-import Html.Attributes
 import Material
 import Material.Scheme
 
@@ -35,9 +33,7 @@ view model =
     in
     div []
         [ h1 [] [ text "hello" ]
-
-        -- , Html.map FormMsg (formView model.form)
-        , Form.Material.textThingy model
+        , Form.Material.textThingy model.mdl
             MdlMsg
             FormMsg
             nameField

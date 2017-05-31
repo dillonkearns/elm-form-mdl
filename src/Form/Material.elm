@@ -1,15 +1,20 @@
 module Form.Material exposing (textThingy)
 
-import Form exposing (Form)
+import Form exposing (FieldState, Form)
 import Form.Field
+import Html
+import Material
 import Material.Options as Options
 import Material.Textfield exposing (error)
 
 
--- textThingy :  -> Html Msg
-
-
-textThingy { mdl } mdlMsg formMsg field =
+textThingy :
+    Material.Model
+    -> (Material.Msg msg -> msg)
+    -> (Form.Msg -> msg)
+    -> FieldState e String
+    -> Html.Html msg
+textThingy mdl mdlMsg formMsg field =
     Material.Textfield.render mdlMsg
         [ 0 ]
         mdl
