@@ -1,10 +1,11 @@
-module Form.Material exposing (submitButton, textfield)
+module Form.Material exposing (basicErrorToString, submitButton, textfield)
 
 -- import Form.Error exposing (ErrorValue)
 -- import Html
 -- import Material
 
 import Form exposing (FieldState, Form)
+import Form.Error exposing (ErrorValue)
 import Form.Field
 import Hash
 import Html
@@ -14,13 +15,15 @@ import Material.Options as Options
 import Material.Textfield exposing (error)
 
 
-submitButton :
-    (Form.Msg -> msg)
-    -> (Material.Msg msg -> msg)
-    -> Material.Model
-    -> List (Button.Property msg)
-    -> List (Html.Html msg)
-    -> Html.Html msg
+-- submitButton :
+--     (Form.Msg -> msg)
+--     -> (Material.Msg msg -> msg)
+--     -> Material.Model
+--     -> List (Button.Property msg)
+--     -> List (Html.Html msg)
+--     -> Html.Html msg
+
+
 submitButton formMsg mdlMsg mdlModel options children =
     Button.render mdlMsg
         [ Hash.hash "submit" ]
@@ -41,30 +44,43 @@ submitButton formMsg mdlMsg mdlModel options children =
 --     -> Html.Html msg
 
 
-textfield formMsg mdlMsg mdlModel field options =
-    let
-        validationOptions =
-            [ Material.Textfield.value (Maybe.withDefault "" field.value)
-            , onMaterialInput formMsg field.path
-            , onMaterialFocus formMsg field.path
-            , onMaterialBlur formMsg field.path
-            , Material.Textfield.error (errorMessage field.liveError)
-                |> Options.when (field.liveError /= Nothing)
-            ]
-    in
+textfield formMsg mdlMsg errorToString mdlModel field options =
     Material.Textfield.render mdlMsg
         [ Hash.hash field.path ]
         mdlModel
-        (options ++ validationOptions)
+        (options ++ validationOptions formMsg errorToString field)
         []
 
 
 
--- errorMessage : Maybe (ErrorValue String) -> String
+-- validationOptions :
+--     (Form.Msg -> msg)
+--     -> (Maybe (ErrorValue String) -> String)
+--     -> FieldState e String
+--     -> List (Options.Property (Material.Textfield.Config msg) msg)
 
 
-errorMessage : Maybe a -> String
-errorMessage maybeError =
+validationOptions formMsg errorToString field =
+    [ Material.Textfield.value (Maybe.withDefault "" field.value)
+    , onMaterialInput formMsg field.path
+    , onMaterialFocus formMsg field.path
+    , onMaterialBlur formMsg field.path
+    , Material.Textfield.error (errorToString field.liveError)
+        |> Options.when (field.liveError /= Nothing)
+    ]
+
+
+{-| Calls toString on
+[Form.Error.ErrorValue](http://package.elm-lang.org/packages/etaque/elm-form/2.0.0/Form-Error#ErrorValue) union type
+to get an error message. Best to replace this for production applications with a custom function.
+-}
+
+
+
+-- basicErrorToString : Maybe (ErrorValue String) -> String
+
+
+basicErrorToString maybeError =
     case maybeError of
         Just error ->
             toString error

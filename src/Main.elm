@@ -84,7 +84,7 @@ submitButtonView mdl =
 
 
 textfield =
-    Form.Material.textfield FormMsg MdlMsg
+    Form.Material.textfield FormMsg MdlMsg Form.Material.basicErrorToString
 
 
 submittedUserView model =
