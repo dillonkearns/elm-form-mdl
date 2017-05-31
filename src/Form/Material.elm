@@ -13,7 +13,7 @@ import Material.Textfield exposing (error)
 
 
 submitButton formMsg mdlMsg ids mdlModel options children =
-    Button.render mdlMsg ids mdlModel (Options.onClick (formMsg Form.Submit) :: options) children
+    Button.render mdlMsg ids mdlModel ([ Options.onClick (formMsg Form.Submit), Button.type_ "submit" ] ++ options) children
 
 
 
