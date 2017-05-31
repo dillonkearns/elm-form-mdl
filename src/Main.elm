@@ -2,6 +2,7 @@ module Main exposing (main)
 
 import Form exposing (Form)
 import Form.Input as Input
+import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
 import Html.Attributes
@@ -33,22 +34,8 @@ view model =
     div []
         [ h1 [] [ text "hello" ]
         , Html.map FormMsg (formView model.form)
-        , textThingy model
+        , Form.Material.textThingy model MdlMsg
         ]
-
-
-textThingy : Model -> Html Msg
-textThingy { mdl } =
-    Material.Textfield.render MdlMsg
-        [ 0 ]
-        mdl
-        [ Material.Options.css "width" "16rem"
-        , Material.Textfield.label "Enter email"
-        , Material.Textfield.floatingLabel
-
-        -- , Material.Options.onInput NameChanged
-        ]
-        []
 
 
 errorFor : { b | liveError : Maybe a } -> Html msg
