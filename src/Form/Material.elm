@@ -1,4 +1,4 @@
-module Form.Material exposing (textfield)
+module Form.Material exposing (submitButton, textfield)
 
 -- import Form.Error exposing (ErrorValue)
 -- import Html
@@ -6,8 +6,14 @@ module Form.Material exposing (textfield)
 
 import Form exposing (FieldState, Form)
 import Form.Field
+import Material.Button as Button
 import Material.Options as Options
 import Material.Textfield exposing (error)
+
+
+submitButton formMsg mdlMsg ids mdlModel options children =
+    Button.render mdlMsg ids mdlModel (Options.onClick (formMsg Form.Submit) :: options) children
+
 
 
 -- -> List (Options.Property (Material.Textfield.Config msg) msg)

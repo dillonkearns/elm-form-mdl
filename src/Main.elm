@@ -7,6 +7,7 @@ import Html exposing (..)
 import Html.Attributes exposing (class)
 import Html.Events exposing (onClick)
 import Material
+import Material.Button as Button
 import Material.Options as Options
 import Material.Scheme
 import Material.Textfield exposing (error)
@@ -47,22 +48,18 @@ view model =
             , Material.Textfield.label "Enter email"
             , Material.Textfield.floatingLabel
             ]
-        , Html.map FormMsg submitButton
+        , Form.Material.submitButton FormMsg
+            MdlMsg
+            [ 0 ]
+            model.mdl
+            [ Button.ripple, Button.colored, Button.raised ]
+            [ text "Submit" ]
         , submittedUser model
         ]
 
 
 submittedUser model =
     div [] [ text (toString model.submittedUser) ]
-
-
-submitButton : Html Form.Msg
-submitButton =
-    button
-        [ onClick Form.Submit
-        , class "btn btn-primary"
-        ]
-        [ text "Submit" ]
 
 
 init : ( Model, Cmd Msg )
