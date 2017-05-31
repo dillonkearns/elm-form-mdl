@@ -6,6 +6,7 @@ module Form.Material exposing (submitButton, textfield)
 
 import Form exposing (FieldState, Form)
 import Form.Field
+import Hash
 import Material.Button as Button
 import Material.Options as Options
 import Material.Textfield exposing (error)
@@ -27,7 +28,7 @@ submitButton formMsg mdlMsg ids mdlModel options children =
 --     -> Html.Html msg
 
 
-textfield formMsg mdlMsg ids mdlModel field options =
+textfield formMsg mdlMsg mdlModel field options =
     let
         something =
             [ Material.Textfield.value (Maybe.withDefault "" field.value)
@@ -39,7 +40,7 @@ textfield formMsg mdlMsg ids mdlModel field options =
             ]
     in
     Material.Textfield.render mdlMsg
-        ids
+        [ Hash.hash field.path ]
         mdlModel
         (options ++ something)
         []

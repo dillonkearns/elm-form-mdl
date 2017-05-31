@@ -4,6 +4,7 @@ import Form exposing (FieldState, Form)
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
+import Html.Events exposing (onSubmit)
 import Material
 import Material.Button as Button
 import Material.Color
@@ -19,7 +20,8 @@ type Msg
 
 
 type alias UserForm =
-    { name : String
+    { initials : String
+    , email : String
     }
 
 
@@ -32,22 +34,41 @@ type alias Model =
 
 view : Model -> Html Msg
 view model =
-    let
-        nameField =
-            Form.getFieldAsString "name" model.form
-    in
     div []
-        [ h1 [] [ text "hello" ]
-        , textfield
-            [ 0 ]
-            model.mdl
-            nameField
-            [ Options.css "width" "16rem"
-            , Material.Textfield.label "Enter email"
-            , Material.Textfield.floatingLabel
+        [ h1 [] [ text "Material Forms" ]
+        , formView model
+        , submittedUserView model
+        ]
+
+
+formView model =
+    let
+        initialsField =
+            Form.getFieldAsString "initials" model.form
+
+        emailField =
+            Form.getFieldAsString "email" model.form
+    in
+    form [ onSubmit (FormMsg Form.Submit) ]
+        [ div []
+            [ textfield
+                model.mdl
+                initialsField
+                [ Options.css "width" "16rem"
+                , Material.Textfield.label "Enter initals"
+                , Material.Textfield.floatingLabel
+                ]
+            ]
+        , div []
+            [ textfield
+                model.mdl
+                emailField
+                [ Options.css "width" "16rem"
+                , Material.Textfield.label "Enter email"
+                , Material.Textfield.floatingLabel
+                ]
             ]
         , submitButtonView model.mdl
-        , submittedUserView model
         ]
 
 
@@ -82,14 +103,19 @@ init =
 
 userFormValidation : Validation () UserForm
 userFormValidation =
-    Form.Validate.map UserForm
-        (Form.Validate.field "name"
-            (Form.Validate.oneOf
-                [ Form.Validate.emptyString
-                , Form.Validate.email
-                ]
+    Form.Validate.succeed UserForm
+        |> Form.Validate.andMap
+            (Form.Validate.field "initials"
+                (Form.Validate.string |> Form.Validate.andThen (Form.Validate.maxLength 3))
             )
-        )
+        |> Form.Validate.andMap
+            (Form.Validate.field "email"
+                (Form.Validate.oneOf
+                    [ Form.Validate.emptyString
+                    , Form.Validate.email
+                    ]
+                )
+            )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
