@@ -36,7 +36,7 @@ view model =
     in
     div []
         [ h1 [] [ text "hello" ]
-        , Form.Material.textThingy [ 0 ]
+        , Form.Material.textfield [ 0 ]
             model.mdl
             MdlMsg
             FormMsg

@@ -1,4 +1,4 @@
-module Form.Material exposing (textThingy)
+module Form.Material exposing (textfield)
 
 import Form exposing (FieldState, Form)
 import Form.Error exposing (ErrorValue)
@@ -10,7 +10,7 @@ import Material.Textfield exposing (error)
 
 
 -- -> List (Options.Property (Material.Textfield.Config msg) msg)
--- textThingy :
+-- textfield :
 --     List Int
 --     -> Material.Model
 --     -> (Material.Msg msg -> msg)
@@ -20,7 +20,7 @@ import Material.Textfield exposing (error)
 --     -> Html.Html msg
 
 
-textThingy ids mdl mdlMsg formMsg field options =
+textfield ids mdl mdlMsg formMsg field options =
     let
         something =
             [ Material.Textfield.value (Maybe.withDefault "" field.value)
