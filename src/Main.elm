@@ -4,6 +4,8 @@ import Form exposing (FieldState, Form)
 import Form.Material
 import Form.Validate exposing (Validation)
 import Html exposing (..)
+import Html.Attributes exposing (class)
+import Html.Events exposing (onClick)
 import Material
 import Material.Options as Options
 import Material.Scheme
@@ -24,6 +26,7 @@ type alias UserForm =
 type alias Model =
     { form : Form () UserForm
     , mdl : Material.Model
+    , submittedUser : Maybe UserForm
     }
 
 
@@ -44,13 +47,29 @@ view model =
             , Material.Textfield.label "Enter email"
             , Material.Textfield.floatingLabel
             ]
+        , Html.map FormMsg submitButton
+        , submittedUser model
         ]
+
+
+submittedUser model =
+    div [] [ text (toString model.submittedUser) ]
+
+
+submitButton : Html Form.Msg
+submitButton =
+    button
+        [ onClick Form.Submit
+        , class "btn btn-primary"
+        ]
+        [ text "Submit" ]
 
 
 init : ( Model, Cmd Msg )
 init =
     { form = Form.initial [] userFormValidation
     , mdl = Material.model
+    , submittedUser = Nothing
     }
         ! []
 
@@ -74,7 +93,16 @@ update msg model =
             model ! []
 
         FormMsg formMsg ->
-            ( { model | form = Form.update userFormValidation formMsg model.form }, Cmd.none )
+            case ( formMsg, Form.getOutput model.form ) of
+                ( Form.Submit, Just user ) ->
+                    let
+                        _ =
+                            Debug.log "Submit success!" user
+                    in
+                    ( { model | form = Form.update userFormValidation formMsg model.form, submittedUser = Just user }, Cmd.none )
+
+                _ ->
+                    ( { model | form = Form.update userFormValidation formMsg model.form }, Cmd.none )
 
         MdlMsg message_ ->
             Material.update MdlMsg message_ model
